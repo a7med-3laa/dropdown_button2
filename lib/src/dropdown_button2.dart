@@ -30,7 +30,7 @@ const EdgeInsets _kUnalignedButtonPadding = EdgeInsets.zero;
 typedef SelectedMenuItemBuilder = Widget Function(
     BuildContext context, Widget child);
 
-typedef SelectedItemButtonBuilder = Widget Function<T>(BuildContext context, T);
+typedef SelectedItemButtonBuilder<T> = Widget Function(BuildContext context, T);
 
 typedef OnMenuStateChangeFn = void Function(bool isOpen);
 

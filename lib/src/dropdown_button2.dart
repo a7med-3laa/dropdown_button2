@@ -30,7 +30,8 @@ const EdgeInsets _kUnalignedButtonPadding = EdgeInsets.zero;
 typedef SelectedMenuItemBuilder = Widget Function(
     BuildContext context, Widget child);
 
-typedef SelectedItemButtonBuilder<T> = Widget Function(BuildContext context, T);
+typedef SelectedItemButtonBuilder<T> = Widget Function(
+    BuildContext context, T?);
 
 typedef OnMenuStateChangeFn = void Function(bool isOpen);
 
@@ -1092,7 +1093,7 @@ class DropdownButton2<T> extends StatefulWidget {
   /// that matches [value] will be displayed.
   final DropdownButtonBuilder? selectedItemBuilder;
 
-  final SelectedItemButtonBuilder? selectedItemButtonBuilder;
+  final SelectedItemButtonBuilder<T?>? selectedItemButtonBuilder;
 
   /// The value of the currently selected [DropdownMenuItem].
   ///

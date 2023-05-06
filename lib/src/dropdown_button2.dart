@@ -1533,7 +1533,8 @@ class DropdownButton2State<T> extends State<DropdownButton2<T>>
     final List<Widget> items = widget.selectedItemBuilder == null
         ? widget.selectedItemButtonBuilder != null
             ? widget.items
-                    ?.map((e) => widget.selectedItemButtonBuilder!(context, e))
+                    ?.map((e) =>
+                        widget.selectedItemButtonBuilder!(context, e.value))
                     .toList() ??
                 <Widget>[]
             : (widget.items != null

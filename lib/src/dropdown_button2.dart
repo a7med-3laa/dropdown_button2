@@ -8,15 +8,14 @@
 */
 
 import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 part 'dropdown_button2_data.dart';
-
 part 'enums.dart';
-
 part 'utils.dart';
 
 const Duration _kDropdownMenuDuration = Duration(milliseconds: 300);
@@ -30,6 +29,8 @@ const EdgeInsets _kUnalignedButtonPadding = EdgeInsets.zero;
 /// A builder to customize the selected menu item.
 typedef SelectedMenuItemBuilder = Widget Function(
     BuildContext context, Widget child);
+
+typedef SelectedItemButtonBuilder = Widget Function<T>(BuildContext context, T);
 
 typedef OnMenuStateChangeFn = void Function(bool isOpen);
 
@@ -968,6 +969,7 @@ class DropdownButton2<T> extends StatefulWidget {
     super.key,
     required this.items,
     this.selectedItemBuilder,
+    this.selectedItemButtonBuilder,
     this.value,
     this.hint,
     this.disabledHint,
@@ -1019,6 +1021,7 @@ class DropdownButton2<T> extends StatefulWidget {
     super.key,
     required this.items,
     this.selectedItemBuilder,
+    this.selectedItemButtonBuilder,
     this.value,
     this.hint,
     this.disabledHint,
@@ -1088,6 +1091,8 @@ class DropdownButton2<T> extends StatefulWidget {
   /// If this callback is null, the [DropdownMenuItem] from [items]
   /// that matches [value] will be displayed.
   final DropdownButtonBuilder? selectedItemBuilder;
+
+  final SelectedItemButtonBuilder? selectedItemButtonBuilder;
 
   /// The value of the currently selected [DropdownMenuItem].
   ///
@@ -1526,7 +1531,14 @@ class DropdownButton2State<T> extends State<DropdownButton2<T>>
     // otherwise, no explicit type adding items maybe trigger a crash/failure
     // when hint and selectedItemBuilder are provided.
     final List<Widget> items = widget.selectedItemBuilder == null
-        ? (widget.items != null ? List<Widget>.of(widget.items!) : <Widget>[])
+        ? widget.selectedItemButtonBuilder != null
+            ? widget.items
+                    ?.map((e) => widget.selectedItemButtonBuilder!(context, e))
+                    .toList() ??
+                <Widget>[]
+            : (widget.items != null
+                ? List<Widget>.of(widget.items!)
+                : <Widget>[])
         : List<Widget>.of(widget.selectedItemBuilder!(context));
 
     int? hintIndex;
@@ -1705,6 +1717,7 @@ class DropdownButtonFormField2<T> extends FormField<T> {
     super.key,
     this.dropdownButtonKey,
     required List<DropdownMenuItem<T>>? items,
+    SelectedItemButtonBuilder? selectedItemButtonBuilder,
     DropdownButtonBuilder? selectedItemBuilder,
     T? value,
     Widget? hint,
@@ -1797,6 +1810,7 @@ class DropdownButtonFormField2<T> extends FormField<T> {
                         key: dropdownButtonKey,
                         items: items,
                         selectedItemBuilder: selectedItemBuilder,
+                        selectedItemButtonBuilder: selectedItemButtonBuilder,
                         value: state.value,
                         hint: hint,
                         disabledHint: disabledHint,

@@ -1719,7 +1719,7 @@ class DropdownButtonFormField2<T> extends FormField<T> {
     super.key,
     this.dropdownButtonKey,
     required List<DropdownMenuItem<T>>? items,
-    SelectedItemButtonBuilder? selectedItemButtonBuilder,
+    SelectedItemButtonBuilder<T?>? selectedItemButtonBuilder,
     DropdownButtonBuilder? selectedItemBuilder,
     T? value,
     Widget? hint,
